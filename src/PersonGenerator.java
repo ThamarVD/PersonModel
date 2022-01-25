@@ -1,32 +1,34 @@
-import java.util.ArrayList;
-import java.util.Scanner;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Scanner;
+
 import static java.nio.file.StandardOpenOption.CREATE;
 
 public class PersonGenerator {
-    public static ArrayList<String> people = new ArrayList<String>();
+    public static ArrayList<Person> people = new ArrayList<Person>();
     public static Scanner userIn = new Scanner(System.in);
 
     public static void main(String[] args) {
         File workingDirectory = new File(System.getProperty("user.dir"));
         Path file = Paths.get(workingDirectory.getPath() + "/PersonTestData.txt");
-        String id = "";
-        String firstName = "";
-        String lastName = "";
-        String title = "";
-        int yearOfBirth = 0;
+
+        String firstName;
+        String lastName;
+        String ID;
+        String title;
+        int YOB;
 
         do{
-            id = SafeInput.getNonZeroLenString(userIn, "What is this person's id number");
+            ID = SafeInput.getNonZeroLenString(userIn, "What is this person's id number");
             firstName = SafeInput.getNonZeroLenString(userIn, "What is this person's First Name");
             lastName = SafeInput.getNonZeroLenString(userIn, "What is this person's Last Name");
             title = SafeInput.getNonZeroLenString(userIn, "What is this person's title (Mr., Mrs., Ms., Dr., etc.)");
-            yearOfBirth = SafeInput.getInt(userIn, "What year was this person born");
+            YOB = SafeInput.getInt(userIn, "What year was this person born");
 
-            people.add(id + ", " + firstName + ", " + lastName + ", " + title + ", " + yearOfBirth);
+            people.add(new Person(firstName, lastName, ID, title, YOB));
         }while(SafeInput.getYNConfirm(userIn, "Would you like to add another person"));
 
         try
@@ -36,9 +38,9 @@ public class PersonGenerator {
             BufferedWriter writer =
                     new BufferedWriter(new OutputStreamWriter(out));
 
-            for(String rec : people)
+            for(Person rec : people)
             {
-                writer.write(rec, 0, rec.length());
+                writer.write(rec.toCSVDataRecord(), 0, rec.toCSVDataRecord().length());
                 writer.newLine();
 
             }

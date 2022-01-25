@@ -3,8 +3,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 
